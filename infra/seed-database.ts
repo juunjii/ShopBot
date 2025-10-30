@@ -105,4 +105,86 @@ async function generateData(): Promise<Item[]> {
   return parser.parse(response.content as string);
 }
 
+// Creates a searchable text summary from furniture item data
+async function createItemSummary(item: Item): Promise<string> {
+  return new Promise((resolve) => {
+    const manufacturerDetails = `Made in ${item.manufacturer_address.country}`;
+    const categories = item.categories.join(", ");
+    const userReviews = item.user_reviews
+      .map(
+        (review) =>
+          `Rated ${review.rating} on ${review.review_date}: ${review.comment}`
+      )
+      .join(" ");
+    const basicInfo = `${item.item_name} ${item.item_description} from the brand ${item.brand}`;
+    const price = `At full price it costs: ${item.prices.full_price} USD, On sale it costs: ${item.prices.sale_price} USD`;
+    const notes = item.notes;
 
+    // Combine all information into summary for vector search
+    const summary = `${basicInfo}. Manufacturer: ${manufacturerDetails}. Categories: ${categories}. Reviews: ${userReviews}. Price: ${price}. Notes: ${notes}`;
+
+    // Resolve promise with complete summary
+    resolve(summary);
+  });
+}
+
+// Populates database
+async function seedDatabase(): Promise<void> {
+  try {
+    await client.connect();
+    await client.db("admin").command({ ping: 1 });
+    console.log("Connected to MongoDB Atlas");
+
+    await setupDatabaseAndCollection();
+    await createVectorSearchIndex();
+
+    const db = client.db("inventoryDB");
+    const collection = db.collection("items");
+
+    await collection.deleteMany({}); // Clear existing data
+    console.log("Cleared existing data in 'items' collection.");
+
+    const items = await generateData();
+
+    const recordsWithSummaries = await Promise.all(
+      items.map(async (item) => ({
+        pageContent: await createItemSummary(item), // Searchable text summary
+        metadata: { ...item }, // Original item data
+      }))
+    );
+
+    // Store each record with vector embeddings in MongoDB
+    for (const record of recordsWithSummaries) {
+      // Create vector embeddings and store in MongoDB Atlas using Gemini
+      await MongoDBAtlasVectorSearch.fromDocuments(
+        [record],
+        new GoogleGenerativeAIEmbeddings({
+          apiKey: process.env.GOOGLE_API_KEY,
+          modelName: "text-embedding-005",
+        }),
+        {
+          collection, // MongoDB collection reference
+          indexName: "vector_index",
+          textKey: "embedding_text", // searchable text
+          embeddingKey: "embedding", // vector embeddings
+        }
+      );
+
+      console.log(
+        "Successfully processed & saved record:",
+        record.metadata.item_id
+      );
+    }
+
+    console.log("Database seeding completed");
+  } catch (error) {
+    console.error("Error connecting to MongoDB Atlas:", error);
+    return;
+  } finally {
+    await client.close();
+    console.log("Disconnected from MongoDB Atlas");
+  }
+}
+
+// Execute the database seeding function and handle any errors
+seedDatabase().catch(console.error);
