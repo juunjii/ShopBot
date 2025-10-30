@@ -160,7 +160,7 @@ async function seedDatabase(): Promise<void> {
         [record],
         new GoogleGenerativeAIEmbeddings({
           apiKey: process.env.GOOGLE_API_KEY,
-          modelName: "text-embedding-005",
+          modelName: "text-embedding-004",
         }),
         {
           collection, // MongoDB collection reference
