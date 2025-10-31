@@ -4,6 +4,8 @@
 
 ShopBot is a modern e-commerce assistant designed to streamline online shopping experiences. Built with Next.js and TypeScript, it features a chat widget interface for seamless user interaction and robust backend infrastructure for handling product lookups and agent-based automation.
 
+The point is to get what you want by just chatting with ShopBot!
+
 ## Current Features
 
 - **Chat Widget:** Interactive chat interface for user queries and shopping assistance.
