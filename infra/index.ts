@@ -22,7 +22,7 @@ async function startServer() {
     });
 
     // Endpoint for conversations
-    app.post("/chat,", async (req: Request, res: Response) => {
+    app.post("/chat", async (req: Request, res: Response) => {
       const message = req.body.message;
       const threadId = Date.now().toString(); // Keeps conversations unique
 
