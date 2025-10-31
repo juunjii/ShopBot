@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Shop Bot
 
-## Getting Started
+## Overview
 
-First, run the development server:
+Shop Bot is a modern e-commerce assistant designed to streamline online shopping experiences. Built with Next.js and TypeScript, it features a chat widget interface for seamless user interaction and robust backend infrastructure for handling product lookups and agent-based automation.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Current Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Chat Widget:** Interactive chat interface for user queries and shopping assistance.
+- **Product Lookup:** Backend tools for item search and retrieval.
+- **Agent Automation:** Infra layer for agent-based operations and database seeding.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## What I Learned
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Core Concepts
 
-## Learn More
+- Agentic AI Architecture
+- MongoDB Atlas Vector Search
+- LangGraph Workflow Orchestration
+- Conversational State Management
 
-To learn more about Next.js, take a look at the following resources:
+### Practical Skills
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- API Integration (Google AI - Gemini)
+- React Frontend Development
+- RESTful API Design
+- Database Seeding & Management
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Quick Start Guide
 
-## Deploy on Vercel
+1. **Start all services:**
+   ```pwsh
+   npm run start:all
+   ```
+   This command will launch the frontend and backend services required for Shop Bot.
+2. **Access the app:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   Open your browser and navigate to the provided local URL (http://localhost:3000/) to interact with the chat widget and explore features.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## What's to Come
+
+- **Wishlist:** Add items to wishlist directly through the chat interface.
+- **Order Management:** Track, place, and manage orders directly through the chat interface.
+- **Enhanced Admin Tools:** Dashboard for managing inventory, analytics, and user activity.
+
+
+
+---
+
+Contributions and feedback are welcome! For more details, see the codebase or reach out via issues.
